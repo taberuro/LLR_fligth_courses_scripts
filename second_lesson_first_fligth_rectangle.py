@@ -1,3 +1,4 @@
+# first fligth in Gazebo - rectangle
 import rospy
 from clover import srv
 from std_srvs.srv import Trigger
