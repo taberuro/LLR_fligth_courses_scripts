@@ -37,25 +37,16 @@ def image_callback(data):
     barcodes = pyzbar.decode(cv_image)
     for barcode in barcodes:
         qr_code = barcode.data.decode("utf-8")
-        
-        # Если же вы хотите, чтобы он написал 1 раз, qr_code
-        # то пишем print("QR = ", qr_code) 
-        # уже после while qr_code==''...
+       
 
 image_sub = rospy.Subscriber("main_camera/image_raw", Image, image_callback, queue_size=1)
-# Если у вас включен throttle кадров, то пишем вместо image_raw - image_raw_throttled
 
 def main():
     print("start")
     navigate_wait(z=1, speed=1, frame_id='body', auto_arm=True)
     navigate_wait(x=1)
     
-    # Можно так же сделать дополнительную проверку, если не находит
-    # то добавить i в цикл, по типу:
-    # i = 0
-    # while i < 50 and qr_code == '' and not rospy.is_shutdown()
-    #   rospy.sleep(0.4)
-    #   i++
+   
 
     print("QR = ", qr_code)
     while qr_code == '' and not rospy.is_shutdown():
