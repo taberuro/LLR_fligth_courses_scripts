@@ -64,17 +64,10 @@ print(arithmetic(7, 3, '%')) #'Неизвестная операция'
 
 # задание 2
 def is_year_leap(year):
-    if year % 4 == 0:
-        if year % 100 == 0:
-            if year % 400 == 0:
-                return True
-            else:
-                return False
-        else:
-            return True
+    if year % 4 == 0 and year % 100 != 0 or year % 400 == 0:
+        return True
     else:
         return False
-
 
 print (is_year_leap(2000)) #True
 print(is_year_leap(1900))#False
@@ -136,16 +129,3 @@ print(is_prime(7)) # True
 print(is_prime(9)) # False
 print(is_prime(1000)) # False
 
-# задание 7
-import datetime
-
-def date(day, month, year):
-    try:
-        datetime.date(year, month, day)
-        return True
-    except ValueError:
-        return False
-
-print(date(31, 12, 2021)) # True
-print(date(29, 2, 2021)) # False (2021 год не високосный, 29 февраля нет)
-print(date(31, 11, 2021)) # False (нет такого месяца)
