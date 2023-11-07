@@ -1,3 +1,4 @@
+#lib's 
 import rospy
 from clover import srv
 from std_srvs.srv import Trigger
@@ -9,16 +10,18 @@ import numpy as np
 import math
 import cv2
 
+#node & bridge
 rospy.init_node('flight')
-
 bridge = CvBridge()
 
+
+#clover func
 get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
 navigate = rospy.ServiceProxy('navigate', srv.Navigate)
 land = rospy.ServiceProxy('land', Trigger)
 set_effect = rospy.ServiceProxy('led/set_effect', SetLEDEffect)  # define proxy to ROS-service
 
-
+#defline place
 def navigate_wait(x=0, y=0, z=1, speed=0.5, frame_id='aruco_map', auto_arm=False, tolerance=0.2):
     navigate(x=x, y=y, z=z, speed=speed, frame_id=frame_id, auto_arm=auto_arm)
 
@@ -39,13 +42,7 @@ def color_callback(data):
     global color
     cv_image = bridge.imgmsg_to_cv2(data, 'bgr8') # OpenCV image
     img_hsv = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)[119:120, 159:160]
-    # Самое последнее, где 119... это пиксель центра камеры
     
-    # Данный нижний принт можете разкоментить чтобы знать значения цвета
-    # print(img_hsv[119][159])
-    
-    # Проверяйте через print значения
-    # От симулятора и в жизни могут отличаться значения
     red_low_value = (0, 150, 200)
     red_high_value = (10, 255, 255)
     
@@ -57,9 +54,10 @@ def color_callback(data):
     else:
         color = 'error'
 
-# Нужно добавить ноду image_raw_throttled, иначе используйте image_raw
 image_sub = rospy.Subscriber("main_camera/image_raw", Image, color_callback)
 
+
+#main func place
 def main():
     print("WE'RE GOING TO START")
     navigate_wait(z=1, speed=1, frame_id='body', auto_arm=True)
